@@ -15,12 +15,9 @@
  */
 package com.v2soft.V2AndLib.demoapp.ui.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.view.MenuItem;
 import android.view.Window;
 
 import com.v2soft.V2AndLib.demoapp.R;
@@ -31,12 +28,12 @@ import com.v2soft.V2AndLib.demoapp.ui.fragments.DemoEndlessList;
  * @author vshcryabets@gmail.com
  *
  */
-public class EndlessListActivity extends FragmentActivity {
+public class EndlessListActivity extends DemoBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.v2andlib_single_fragment);
         if ( savedInstanceState == null ) {
             Fragment fragment = DemoEndlessList.newInstance();
@@ -44,7 +41,6 @@ public class EndlessListActivity extends FragmentActivity {
             trans.replace(R.id.v2andLibFragment, fragment);
             trans.commit();
         }
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
     /**
      * Return sample display name
@@ -55,13 +51,18 @@ public class EndlessListActivity extends FragmentActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//        case android.R.id.home:
-//            finish();
-//            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+    public void showError(String message) {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void setLoadingProcess(boolean value, Object tag) {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void setBlockingProcess(boolean value, Object tag) {
+        // TODO Auto-generated method stub
+        
     }
 }
