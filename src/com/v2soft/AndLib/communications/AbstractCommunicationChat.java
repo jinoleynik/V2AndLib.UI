@@ -7,17 +7,20 @@ import java.util.List;
 /**
  * 
  * @author vshcryabets@gmail.com
+ * @param <M> message type type
+ * @param <MID> message id type
+ * @param <CID> chat id type
  *
  */
-public class AbstractCommunicationChat<M extends AbstractCommunicationMessage<?, ?>,
-    L extends AbstractCommunicationChat.AbstractCommunicationChatListener> 
+public class AbstractCommunicationChat<M extends AbstractCommunicationMessage<?, MID>, MID, CID> 
     implements Serializable {
     private static final long serialVersionUID = 1L;
     public interface AbstractCommunicationChatListener {
         void onChatChanged();
     }
     protected List<M> mMessages;
-    transient protected L mListener;
+    protected CID mChatId;
+    transient protected AbstractCommunicationChatListener mListener;
     
     public AbstractCommunicationChat() {
         mMessages = new ArrayList<M>();
@@ -30,20 +33,47 @@ public class AbstractCommunicationChat<M extends AbstractCommunicationMessage<?,
     public void setMessages(List<M> mMessages) {
         this.mMessages = mMessages;
     }
-    public void addMessage(M message) {
-        mMessages.add(message);
-        if ( mListener != null ) {
-            mListener.onChatChanged();
+    /**
+     * Add message to the chat. If message with same id was already in a list, false will be returned.
+     * @param message true if message was added successfully
+     */
+    public boolean addMessage(M message) {
+        if ( mMessages.contains(message)) {
+            return false;
         }
-    }
-
-    public boolean removeMessage(M message) {
-        boolean res = mMessages.remove(message);
-        if ( mListener != null ) {
+        boolean res = mMessages.add(message);
+        if ( res && mListener != null ) {
             mListener.onChatChanged();
         }
         return res;
     }
-    public L getListener() {return mListener;}
-    public void setListener(L listener) {mListener = listener;}
+
+    public boolean removeMessage(M message) {
+        boolean res = mMessages.remove(message);
+        if ( res && mListener != null ) {
+            mListener.onChatChanged();
+        }
+        return res;
+    }
+    /**
+     * Find and return the index in this chat of the the specified message, or -1 if this chat does not contain this message.
+     * @return
+     */
+    public int indexOf(M message) {
+        return mMessages.indexOf(message);
+    }
+    public AbstractCommunicationChatListener getListener() {return mListener;}
+    public void setListener(AbstractCommunicationChatListener listener) {mListener = listener;}
+    /**
+     * Get this chat id
+     */
+    public CID getId() {
+        return mChatId;
+    }
+    /**
+     * Set chat id
+     */
+    public void setId(CID id) {
+        mChatId = id;
+    }
 }
