@@ -1,0 +1,3 @@
+[submodule "contrib/ABS"]
+	path = contrib/ABS
+	url = git://github.com/JakeWharton/ActionBarSherlock.git
